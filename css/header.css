@@ -1,0 +1,665 @@
+/* Header and Frame-based navigation for IEKTopics 2026. */
+#legacy-site-nav {
+    display: none !important;
+}
+
+#header,
+.index__main {
+    margin-top: 0;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    height: auto;
+    min-height: 80px;
+    background: #fff;
+    box-shadow: none;
+    z-index: 100;
+}
+
+#header > .headerContent {
+    max-width: 1920px;
+    height: auto;
+    min-height: 80px;
+    padding: 0 24px;
+}
+
+#header .logo > a {
+    display: flex;
+    align-items: center;
+    width: 288px;
+    height: 35px;
+    overflow: hidden;
+}
+
+/* Keep the brand title compact at every viewport size. */
+#header .logo {
+    transform: scale(.7);
+    transform-origin: left center;
+}
+
+#header .logoArtwork {
+    display: block;
+    flex: 0 0 202px;
+    width: 202px;
+    height: 35px;
+    overflow: hidden;
+}
+
+#header .logoArtwork img {
+    display: block;
+    width: 288px;
+    max-width: none;
+    height: 35px;
+}
+
+#header .logoYear {
+    display: block;
+    flex: 0 0 auto;
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 35px;
+    letter-spacing: .4px;
+    white-space: nowrap;
+}
+
+#header #menuBtn {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+#header .mainMenu {
+    height: auto;
+    min-height: 80px;
+}
+
+#header .mainMenu > li {
+    flex: 0 0 auto;
+}
+
+#header .mainMenu > li + li::before {
+    top: 10px;
+    height: 60px;
+    background: #bababa;
+}
+
+#header .mainTitle,
+#header .navGroup {
+    color: #231815;
+}
+
+#header .mainTitle {
+    display: flex;
+    align-items: center;
+    height: auto;
+    min-height: 80px;
+    padding: 0 28px;
+    white-space: nowrap;
+}
+
+#header .navGroup {
+    position: relative;
+    height: auto;
+    min-height: 80px;
+    cursor: pointer;
+}
+
+#header .navTitle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    min-height: 80px;
+    padding: 0 28px;
+    white-space: normal;
+}
+
+#header .navTitle .chapter {
+    flex: 0 0 auto;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#header .navTitle .text {
+    min-width: 0;
+    flex: 1 1 auto;
+    max-width: 180px;
+    margin-left: 20px;
+    color: var(--section-color);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* Override the legacy 2025 nth-child palette with the 2026 section data. */
+#header .mainMenu li.navSection .navTitle .text {
+    color: var(--section-color);
+}
+
+#header .navSection--chapter-2 .navTitle .text,
+#header .navSection--chapter-3 .navTitle .text,
+#header .navSection--conclusion .navTitle .text {
+    max-width: 190px;
+}
+
+#header .subMenu {
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    display: none;
+    width: 380px;
+    max-width: calc(100vw - 24px);
+    padding: 5px 12px 0;
+    color: #231815;
+    background: rgba(255, 255, 255, .9);
+    box-shadow: none;
+    z-index: 110;
+}
+
+#header .subMenu::before {
+    background: var(--section-color);
+}
+
+#header .navGroup:hover .subMenu,
+#header .navGroup:focus-within .subMenu,
+#header .navGroup.is-open .subMenu {
+    display: block;
+}
+
+#header .subMenu .list {
+    display: block;
+    padding: 12px 10px;
+    border-top: 1px solid #bababa;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+#header .subMenu .list:first-child {
+    border-top: 0;
+}
+
+#header .subMenu .list a {
+    display: block;
+    color: #231815;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+#header .menuCategory + .menuCategory {
+    margin-top: 0;
+}
+
+#header .menuCategoryTitle {
+    padding: 8px 10px 7px;
+    border-top: 1px solid #bababa;
+    color: var(--section-color);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+/* Frame 6 uses the chapter-two dropdown accent for its top rule and categories. */
+#header .mainMenu li.navSection--chapter-2 .subMenu::before {
+    background: #26b7bc;
+}
+
+#header .navSection--chapter-2 .menuCategoryTitle {
+    color: #26b7bc;
+}
+
+#header .menuCategory:first-child .menuCategoryTitle {
+    border-top: 0;
+}
+
+#header .menuCategoryTitle + .list {
+    border-top: 0;
+}
+
+#header .menuCategory .list {
+    padding-top: 13px;
+    padding-bottom: 13px;
+}
+
+#header .menuCategoryTitle {
+    padding-top: 11px;
+    padding-bottom: 10px;
+}
+
+#header #menuBtn:focus-visible,
+#header .mainTitle:focus-visible,
+#header .navGroup:focus-visible,
+#header .subMenu a:focus-visible {
+    outline: 3px solid #f5b335;
+    outline-offset: 3px;
+}
+
+@media (min-width: 901px) {
+    /* Keep the desktop dropdown translucent over the key visual. */
+    #header .mainMenu li.navSection .subMenu {
+        background: rgba(255, 255, 255, .9);
+    }
+
+    #header #menuBtn {
+        display: none;
+    }
+
+    #header #site-nav {
+        position: static;
+        top: auto;
+        left: auto;
+        display: block;
+        width: auto;
+        height: auto;
+        min-height: 80px;
+        max-width: calc(100% - 312px);
+        max-height: none;
+        margin-left: auto;
+        overflow: visible;
+        background: transparent;
+        min-width: 0;
+        flex: 0 1 auto;
+    }
+
+    #header .mainMenu {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        width: auto;
+        height: auto;
+        min-height: 80px;
+        min-width: 0;
+    }
+
+    #header .mainMenu > li {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    #header .mainMenu > li + li::before {
+        top: 10px;
+        left: 0;
+        width: 1px;
+        height: calc(100% - 20px);
+        transform: none;
+    }
+
+    #header .navHome .mainTitle,
+    #header .navHistory .mainTitle {
+        padding-right: 28px;
+        padding-left: 28px;
+    }
+}
+
+/* Match the 1920px desktop composition in Frames 5 and 6. */
+@media (min-width: 1840px) {
+    #header #site-nav {
+        width: 1478px;
+        max-width: calc(100% - 312px);
+        flex-basis: 1478px;
+    }
+
+    #header .mainMenu > li {
+        flex: 1 1 auto;
+    }
+
+    #header .navHome {
+        width: 86px;
+    }
+
+    #header .navSection--preface {
+        width: 91px;
+    }
+
+    #header .navSection--chapter-1 {
+        width: 286px;
+    }
+
+    #header .navSection--chapter-2 {
+        width: 289px;
+    }
+
+    #header .navSection--chapter-3 {
+        width: 292px;
+    }
+
+    #header .navSection--conclusion {
+        width: 313px;
+    }
+
+    #header .navHistory {
+        width: 121px;
+    }
+
+    #header .mainTitle,
+    #header .navTitle {
+        width: 100%;
+    }
+
+    #header .navTitle .chapter,
+    #header .navTitle .text,
+    #header .mainTitle .title {
+        font-size: 18px;
+    }
+}
+
+/* Compact desktop navigation between the mobile and wide-desktop layouts. */
+@media (min-width: 901px) and (max-width: 1680px) {
+    #header > .headerContent {
+        padding: 0 5px;
+    }
+
+    #header #site-nav {
+        max-width: calc(100% - 220px);
+    }
+
+    #header .mainMenu {
+        height: auto;
+        min-height: 80px;
+    }
+
+    #header .mainTitle,
+    #header .navTitle {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    #header .navTitle .text {
+        max-width: 145px;
+        margin-left: 10px;
+        font-size: 14px;
+    }
+
+    #header .navTitle .chapter,
+    #header .mainTitle .title {
+        font-size: 14px;
+    }
+
+    #header .subMenu {
+        top: var(--nav-height);
+    }
+}
+
+@media (min-width: 901px) and (max-width: 1199px) {
+    #header > .headerContent {
+        padding: 0 10px;
+    }
+
+    #header #site-nav {
+        max-width: calc(100% - 185px);
+    }
+
+    #header .mainTitle,
+    #header .navTitle {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+    #header .navTitle .text {
+        min-width: 0;
+        max-width: 145px;
+        overflow-wrap: anywhere;
+        white-space: normal;
+    }
+
+    #header .navTitle .chapter,
+    #header .mainTitle .title {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 900px) {
+    :root {
+        --nav-height: 60px;
+    }
+
+    #header {
+        height: 60px;
+        min-height: 60px;
+    }
+
+    #header > .headerContent {
+        height: 100%;
+        min-height: 0;
+        padding: 0 15px;
+    }
+
+    #header .logo > a {
+        width: 168px;
+        height: 21px;
+    }
+
+    #header .logoArtwork {
+        flex-basis: 118px;
+        width: 118px;
+        height: 21px;
+    }
+
+    #header .logoArtwork img {
+        width: 168px;
+        height: auto;
+    }
+
+    #header .logoYear {
+        font-size: 19px;
+        line-height: 21px;
+        letter-spacing: .2px;
+    }
+
+    #header #menuBtn {
+        position: relative;
+        display: block !important;
+        flex: 0 0 30px;
+        width: 30px;
+        height: 30px;
+        margin-left: auto;
+        z-index: 101;
+    }
+
+    #header #site-nav {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        display: flex;
+        flex: none;
+        justify-content: flex-start;
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        height: auto;
+        max-height: calc(100% - 60px);
+        margin-left: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: #fff;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity .4s ease, visibility 0s linear .4s;
+    }
+
+    #header #menuBtn > span,
+    #header #menuBtn > span::before,
+    #header #menuBtn > span::after {
+        position: absolute;
+        left: 0;
+        display: block;
+        width: 30px;
+        height: 3px;
+        background: #004ea2;
+    }
+
+    #header #menuBtn > span {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    #header #menuBtn > span::before,
+    #header #menuBtn > span::after {
+        content: '';
+        transition: transform .3s ease;
+    }
+
+    #header #menuBtn > span::before {
+        top: -10px;
+    }
+
+    #header #menuBtn > span::after {
+        top: 10px;
+    }
+
+    #header #menuBtn.active > span {
+        background: transparent;
+    }
+
+    #header #menuBtn.active > span::before {
+        transform: translateY(10px) rotate(45deg);
+    }
+
+    #header #menuBtn.active > span::after {
+        transform: translateY(-10px) rotate(-45deg);
+    }
+
+    #header #site-nav.is-open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition-delay: 0s;
+    }
+
+    #header .mainMenu {
+        display: flex;
+        flex: none;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        height: auto;
+        min-width: 0;
+    }
+
+    #header .mainMenu > li {
+        flex: none;
+        width: 100%;
+        min-width: 0;
+        min-height: 44px;
+    }
+
+    #header .mainMenu > li + li::before {
+        top: 0;
+        left: 15px;
+        width: calc(100% - 30px);
+        height: 1px;
+        transform: none;
+    }
+
+    #header .mainMenu > li > .mainTitle,
+    #header .mainMenu > li > .navGroup {
+        width: 100%;
+    }
+
+    #header .navGroup {
+        height: auto;
+    }
+
+    #header .mainTitle,
+    #header .navTitle {
+        min-height: 44px;
+        height: auto;
+        padding: 10px 15px;
+    }
+
+    #header .navTitle {
+        justify-content: space-between;
+        padding-right: 45px;
+    }
+
+    #header .navTitle .text {
+        min-width: 0;
+        max-width: none;
+        margin-left: auto;
+        padding-left: 20px;
+        text-align: right;
+    }
+
+    #header .navGroup::after {
+        content: '';
+        position: absolute;
+        top: 21px;
+        right: 18px;
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+        transition: transform .2s ease;
+    }
+
+    #header .navGroup.is-open::after {
+        transform: rotate(225deg);
+    }
+
+    #header .subMenu {
+        position: static;
+        display: block;
+        width: 100%;
+        max-width: none;
+        max-height: 0;
+        padding: 0 15px;
+        box-shadow: none;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height .4s ease, opacity .4s ease;
+    }
+
+    #header .navGroup:hover .subMenu,
+    #header .navGroup:focus-within .subMenu {
+        display: none;
+    }
+
+    #header .navGroup.is-open .subMenu {
+        display: block;
+        max-height: 2000px;
+        opacity: 1;
+    }
+
+    #header .subMenu .list {
+        padding: 8px 0;
+        color: #fff;
+    }
+
+    #header .subMenu .list a {
+        color: #fff;
+    }
+
+    #header .menuCategoryTitle {
+        padding: 8px 0 7px;
+    }
+
+    #header .menuCategory .list {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    #header .navSection--chapter-2 .menuCategoryTitle {
+        color: #ef5b16;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #header #site-nav,
+    #header .subMenu {
+        transition: none;
+    }
+
+    #header .navGroup::after {
+        transition: none;
+    }
+}

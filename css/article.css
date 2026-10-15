@@ -1,0 +1,525 @@
+:root {
+    --article-preface: #003596;
+    --article-chapter-1: #0098c8;
+    --article-chapter-2: #ef5b16;
+    --article-chapter-3: #00a879;
+    --article-conclusion: #5f67ae;
+    --article-accent: #26b7bc;
+    --article-gray: #707070;
+}
+
+body.articleBody,
+body.descriptionBody {
+    min-width: 320px;
+    color: #231815;
+    background: #fff url('../images/article-background.png') center top / 100% auto no-repeat;
+}
+
+.articleBody #app,
+.descriptionBody #app {
+    min-height: 100vh;
+}
+
+.article {
+    min-height: calc(100vh - var(--nav-height));
+    padding: calc(var(--nav-height) + 55px) 0 35px;
+    letter-spacing: 1px;
+}
+
+.article__wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1310px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.article__main {
+    position: relative;
+    padding: 35px 30px 48px;
+    background: #fff;
+}
+
+.article__main::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 6px;
+    background: var(--article-color, var(--article-chapter-1));
+}
+
+.article__header {
+    padding: 0 20px 20px;
+    border-bottom: 2px solid var(--article-color, var(--article-chapter-1));
+}
+
+.article__header--top,
+.article__header--bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.article__header--top {
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.article__header--title {
+    margin: 0 0 6px;
+    color: var(--article-color, var(--article-chapter-1));
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.article__header .label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 34px;
+    color: var(--article-gray);
+    font-size: 24px;
+}
+
+.article__header .label span + span {
+    position: relative;
+}
+
+.article__header .label span + span::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -22px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 10px solid var(--article-gray);
+    transform: translateY(-50%);
+}
+
+.article__header .author {
+    margin: 0;
+    color: var(--article-gray);
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.article__share {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 10px;
+}
+
+.article__share a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 9px;
+    color: #fff;
+    background: var(--article-accent);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.article__share a:hover,
+.article__share a:focus-visible {
+    background: var(--article-color, var(--article-chapter-1));
+}
+
+.article__info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    color: var(--article-gray);
+    font-size: 14px;
+}
+
+.article__info span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.article__info b {
+    color: var(--article-accent);
+    font-size: 18px;
+}
+
+.article__content {
+    padding: 25px 35px 0;
+    font-size: 18px;
+}
+
+.article__content > :first-child {
+    margin-top: 0;
+}
+
+.article__content h1,
+.descriptionPreview h1 {
+    margin: 24px 0 8px;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.article__content h2,
+.descriptionPreview h2 {
+    margin: 16px 0 20px;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.article__content p,
+.descriptionPreview p {
+    margin: 24px 0;
+    line-height: 1.8;
+}
+
+.article__content img,
+.descriptionPreview img {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: 24px auto;
+}
+
+.article__content figure,
+.descriptionPreview figure {
+    margin: 24px 0;
+}
+
+.article__content figure img,
+.descriptionPreview figure img {
+    margin-bottom: 8px;
+}
+
+.article__content figcaption,
+.descriptionPreview figcaption {
+    color: var(--article-gray);
+    font-size: 14px;
+    text-align: center;
+}
+
+.article__content ul,
+.descriptionPreview ul {
+    margin: 24px 0;
+    padding-left: 2rem;
+    list-style: disc;
+    line-height: 1.8;
+}
+
+.article__content ol,
+.descriptionPreview ol {
+    margin: 24px 0;
+    padding-left: 1.75rem;
+    list-style: decimal;
+    line-height: 1.8;
+}
+
+.article__content ul ul,
+.descriptionPreview ul ul {
+    margin: 6px 0;
+    list-style: circle;
+}
+
+.article__content ul ol,
+.article__content ol ul,
+.descriptionPreview ul ol,
+.descriptionPreview ol ul {
+    margin: 6px 0;
+}
+
+.article__note {
+    margin: 24px 0;
+    padding-top: 16px;
+    border-top: 1px solid #d7d7d7;
+}
+
+.article__note p,
+.article__note ol {
+    margin: 0 !important;
+    font-size: 14px;
+}
+
+.article__note ol li {
+    overflow-wrap: anywhere;
+}
+
+.article__iekview {
+    margin: 30px 0 24px;
+}
+
+.iekview__main {
+    padding: 0 20px 20px;
+    background: #fffaec;
+}
+
+.iekview__label {
+    display: inline-block;
+    width: 120px;
+    margin: -5px 0 10px !important;
+    padding: 7px 0;
+    color: #fff;
+    background: var(--article-color, var(--article-chapter-1));
+    border-radius: 0 0 10px 10px;
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.iekview__main--content {
+    padding: 0 15px;
+}
+
+.iekview__main--content > :first-child {
+    margin-top: 0;
+}
+
+.iekview__into {
+    margin: 0 20px;
+    padding: 8px 20px;
+    border-left: 3px solid var(--article-color, var(--article-chapter-1));
+}
+
+.iekview__into > :first-child {
+    margin-top: 0;
+}
+
+.iekview__into > :last-child {
+    margin-bottom: 0;
+}
+
+.article__download {
+    padding: 18px 15px 0;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+}
+
+.article__download p {
+    margin: 0;
+}
+
+.downloadStatus {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 4px 10px;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.article .txtGreen,
+.description .txtGreen { color: var(--article-color, var(--article-chapter-1)); }
+.article .txtGray,
+.description .txtGray { color: var(--article-gray); }
+.article .txtRed,
+.description .txtRed { color: #f00000; }
+.article .txtWhite,
+.description .txtWhite { color: #fff; }
+.article .txtColor1,
+.description .txtColor1 { color: var(--article-preface); }
+.article .txtColor2,
+.description .txtColor2 { color: var(--article-chapter-1); }
+.article .txtColor3,
+.description .txtColor3 { color: var(--article-chapter-2); }
+.article .txtColor4,
+.description .txtColor4 { color: var(--article-chapter-3); }
+.article .txtColor5,
+.description .txtColor5 { color: var(--article-conclusion); }
+.article .txtColor6,
+.description .txtColor6 { color: var(--article-accent); }
+.article .txtBold,
+.description .txtBold { font-weight: 700; }
+.article .txtCenter,
+.description .txtCenter { text-align: center; }
+
+/* Override the legacy component colors bundled in main.css. */
+.article .iekview__main,
+.description .iekview__main {
+    background: #fffaec;
+}
+
+.article .iekview__main .iekview__label,
+.description .iekview__main .iekview__label {
+    color: #fff;
+    background: var(--article-color, var(--article-chapter-1));
+}
+
+.article .iekview__into,
+.description .iekview__into {
+    border-left-color: var(--article-color, var(--article-chapter-1));
+}
+
+.description .descriptionPreview h1 {
+    margin: 24px 0 8px;
+}
+
+.description .descriptionPreview h2 {
+    margin: 16px 0 20px;
+}
+
+.description .descriptionPreview p,
+.description .descriptionPreview figure,
+.description .descriptionPreview ul,
+.description .descriptionPreview ol {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.description .descriptionPreview ul,
+.description .descriptionPreview ol {
+    padding-left: 2rem;
+}
+
+.description .descriptionPreview ul { list-style: disc; }
+.description .descriptionPreview ol { list-style: decimal; }
+.description .descriptionPreview ul ul { list-style: circle; }
+
+.description .descriptionPreview img {
+    width: 100%;
+    max-width: 600px;
+    margin: 24px auto;
+}
+
+#Footer.articleFooter,
+#Footer.descriptionFooter {
+    position: static;
+    width: 100%;
+    min-height: 40px;
+    padding: 6px 10px;
+    color: #000;
+    background: #fff;
+    font-size: 16px;
+    text-align: center;
+}
+
+@media (max-width: 1199px) {
+    .article {
+        padding-top: 100px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .article__wrap {
+        max-width: 780px;
+    }
+
+    .article__main {
+        padding: 28px 20px 40px;
+    }
+
+    .article__header .label {
+        font-size: 20px;
+    }
+
+    .article__header .author {
+        font-size: 17px;
+    }
+
+    .article__content {
+        padding: 22px 25px 0;
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 768px) {
+    body.articleBody,
+    body.descriptionBody {
+        background-size: auto 100vw;
+    }
+
+    .article {
+        padding: 84px 0 25px;
+    }
+
+    .article__wrap {
+        padding: 0 10px;
+    }
+
+    .article__main {
+        padding: 25px 10px 32px;
+    }
+
+    .article__header--top,
+    .article__header--bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .article__header {
+        padding: 0 10px 14px;
+    }
+
+    .article__header--title {
+        font-size: 28px;
+        line-height: 1.3;
+    }
+
+    .article__header .label {
+        font-size: 18px;
+    }
+
+    .article__header .author {
+        font-size: 16px;
+    }
+
+    .article__share {
+        align-self: flex-end;
+    }
+
+    .article__content {
+        padding: 20px 10px 0;
+        font-size: 16px;
+    }
+
+    .article__content h1,
+    .descriptionPreview h1 {
+        font-size: 24px;
+    }
+
+    .article__content h2,
+    .descriptionPreview h2 {
+        font-size: 20px;
+    }
+
+    .article__content p,
+    .description .descriptionPreview p,
+    .article__content ul,
+    .article__content ol,
+    .description .descriptionPreview ul,
+    .description .descriptionPreview ol {
+        margin-top: 16px;
+        margin-bottom: 16px;
+    }
+
+    .article__note p,
+    .article__note ol {
+        font-size: 12px;
+    }
+
+    .iekview__main {
+        padding: 0 10px 12px;
+    }
+
+    .iekview__main--content {
+        padding: 0 5px;
+    }
+
+    .iekview__label {
+        width: 95px;
+        font-size: 20px;
+    }
+
+    .iekview__into {
+        margin: 0 10px;
+        padding: 8px 10px;
+    }
+}

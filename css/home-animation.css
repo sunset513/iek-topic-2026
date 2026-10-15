@@ -1,0 +1,269 @@
+/* IEKTopics 2026 interactive key visual */
+.index-page,
+.index-page #app {
+    background: #fff;
+}
+
+.index .index__main {
+    min-height: 0;
+    background: #fff;
+}
+.index .index__background {
+    display: none;
+}
+.index .KeyVision {
+    height: auto;
+    min-height: 0;
+    padding: calc(var(--nav-height) + 36px) 0 0;
+    overflow: visible;
+    background: #fff;
+}
+.index .KeyVision > .container {
+    max-width: 1200px;
+    height: auto;
+}
+.index .KeyVision__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    padding-top: 0;
+    justify-content: center;
+}
+.logoPlaceholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 288px;
+    height: 35px;
+    border: 1px dashed #999;
+    color: #555;
+    font-size: 16px;
+    letter-spacing: .04em;
+}
+.KeyVision__headline {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: .04em .24em;
+    width: 100%;
+    margin: 8px 0 2px;
+    padding: 0 16px;
+    color: #004ea2;
+    font-size: clamp(26px, 3.4vw, 46px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: .08em;
+    text-align: center;
+    background: #fff;
+}
+.index .floatBtn {
+    z-index: 5;
+}
+.KeyVision__headline > strong {
+    white-space: nowrap;
+    font-weight: 500;
+}
+.KeyVision__headlineLead {
+    font-weight: 700;
+}
+.KeyVision__headline > .KeyVision__headlineLead {
+    font-weight: 700;
+}
+.KeyVision__headlineArrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(23px, 2.6vw, 34px);
+    flex: 0 0 auto;
+}
+.KeyVision__headlineArrow img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+.KeyVision__animation {
+    position: relative;
+    width: min(100%, 1140px, calc((100vh - 221px) * 1.54));
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1080 / 860;
+    overflow: visible;
+    background: #fff;
+}
+.KeyVision__cards,
+.KeyVision__runner {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    transform: translateY(-15%);
+}
+.KeyVision__cards {
+    z-index: 1;
+    perspective: 1800px;
+    perspective-origin: 50% 50%;
+}
+.KeyVision__cards .card-wrap {
+    --card-width: clamp(70px, 15%, 165px);
+    position: absolute;
+    left: 50%;
+    top: 56%;
+    width: var(--card-width);
+    aspect-ratio: 180 / 685;
+    transform-style: preserve-3d;
+    transform-origin: center center;
+    will-change: transform, opacity;
+}
+.KeyVision__cards .card-wrap img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    filter: drop-shadow(0 16px 18px rgba(0,0,0,.18));
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.KeyVision__runner {
+    z-index: 2;
+    overflow: visible;
+    pointer-events: none;
+}
+.KeyVision__runner #runner {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: min(49%, 530px);
+    height: auto;
+    transform-origin: 50% 97.81%;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.KeyVision__brands {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    gap: 20px;
+    width: 100%;
+    min-height: 38px;
+    margin-top: 4px;
+    padding: 0;
+    background: transparent;
+    overflow: visible;
+}
+.KeyVision__brand {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+.KeyVision__brand--iek {
+    padding-left: 20px;
+    border-left: 1px solid #777;
+}
+.KeyVision__brand img {
+    display: block;
+    flex: 0 0 auto;
+    width: auto;
+    height: auto;
+    max-width: none;
+    margin: 0;
+    object-fit: contain;
+}
+.KeyVision__brand:first-child img {
+    width: 164px;
+    height: 38px;
+}
+.KeyVision__brand:last-child img {
+    width: 205px;
+    height: 35px;
+}
+.index #Footer {
+    position: static;
+    color: #000;
+    background: #fff;
+    margin-top: 0;
+    height: 40px;
+    min-height: 40px;
+    font-size: 14px;
+    padding: 3px 6px;
+}
+.index #Footer .enterprise {
+    display: none;
+}
+@media (max-width: 960px) {
+    .index .KeyVision {
+        min-height: 0;
+        padding-top: calc(var(--nav-height) + 36px);
+    }
+    .index .KeyVision > .container {
+        max-width: 100%;
+        padding: 0 15px;
+    }
+    .KeyVision__animation {
+        width: min(100%, 1140px, calc((100vh - 221px) * 1.54));
+        height: auto;
+        min-height: 0;
+    }
+}
+@media (max-width: 768px) {
+    .logoPlaceholder {
+        width: 168px;
+        height: 28px;
+        font-size: 13px;
+    }
+    .index .KeyVision {
+        min-height: 0;
+        padding: calc(var(--nav-height) + 28px) 0 0;
+    }
+    .index .KeyVision > .container {
+        padding: 0;
+    }
+    .KeyVision__animation {
+        height: clamp(360px, 72vw, 860px);
+        min-height: 0;
+    }
+    .KeyVision__cards .card-wrap {
+        --card-width: clamp(64px, 20vw, 125px);
+    }
+    .KeyVision__runner #runner {
+        width: 54%;
+    }
+    .KeyVision__headline {
+        margin: 8px 0 2px;
+        padding: 0 12px;
+        font-size: clamp(25px, 8vw, 40px);
+        letter-spacing: .04em;
+    }
+    .KeyVision__brands {
+        gap: 8px;
+        margin-top: 4px;
+        padding: 0 8px;
+    }
+    .KeyVision__brand--iek {
+        padding-left: 8px;
+    }
+    .KeyVision__brand:first-child img {
+        width: min(164px, 40vw);
+        height: auto;
+    }
+    .KeyVision__brand:last-child img {
+        width: min(205px, 46vw);
+        height: auto;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .KeyVision__cards .card-wrap,
+    .KeyVision__runner #runner {
+        transition: none;
+    }
+}
