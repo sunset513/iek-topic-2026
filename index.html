@@ -11,7 +11,7 @@
     <link href="css/main.css" rel="stylesheet">
     <link href="css/home-animation.css?20260915n" rel="stylesheet">
     <link href="css/header.css?20260915a" rel="stylesheet">
-    <link href="css/home-videos.css?20261016" rel="stylesheet">
+    <link href="css/home-videos.css?20261016b" rel="stylesheet">
     <!--GTM：GA4-->
     <script>
         (function (w, d, s, l, i) {
@@ -105,12 +105,49 @@
         </footer>
     </div>
     <dialog class="videoLightbox" id="videoLightbox" aria-labelledby="videoLightboxTitle">
-        <div class="videoLightbox__panel">
-            <div class="videoLightbox__header">
-                <h2 id="videoLightboxTitle">影片介紹</h2>
-                <button type="button" class="videoLightbox__close" id="closeVideoLightbox" aria-label="關閉影片" autofocus>×</button>
-            </div>
-            <div class="videoLightbox__player" id="videoLightboxPlayer"></div>
+        <div class="videoLightbox__header">
+            <p class="videoLightbox__heading">專刊影音</p>
+            <button type="button" class="videoLightbox__close" id="closeVideoLightbox" aria-label="關閉影片" autofocus>×</button>
+        </div>
+        <div class="videoLightbox__body">
+            <section class="videoLightbox__feature" aria-label="影片與介紹">
+                <div class="videoLightbox__player" id="videoLightboxPlayer"></div>
+                <div class="videoLightbox__info">
+                    <p class="videoLightbox__episode" id="videoLightboxEpisode">EP1</p>
+                    <h2 id="videoLightboxTitle">跟著 AI 主播 iKi，掌握下一個十年的無人自主產業布局！</h2>
+                    <div class="videoLightbox__description" id="videoLightboxDescription"></div>
+                    <div class="videoLightbox__actions">
+                        <button type="button" id="shareVideo" aria-controls="videoSharePanel" aria-expanded="false">分享本集 ↗</button>
+                        <button type="button" id="copyVideoLink">複製連結</button>
+                    </div>
+                    <div class="videoLightbox__sharePanel" id="videoSharePanel" hidden>
+                        <p class="videoLightbox__shareHeading">分享本集</p>
+                        <div class="videoLightbox__shareOptions">
+                            <a id="videoLineShare" class="videoLightbox__line" target="_blank" rel="noopener noreferrer">LINE ↗</a>
+                            <a id="videoFacebookShare" class="videoLightbox__facebook" target="_blank" rel="noopener noreferrer">Facebook ↗</a>
+                            <button type="button" id="videoPanelCopy">複製連結</button>
+                        </div>
+                        <label for="videoShareUrl">本集連結</label>
+                        <input type="url" id="videoShareUrl" readonly>
+                    </div>
+                    <p class="videoLightbox__status" id="videoShareStatus" role="status" aria-live="polite"></p>
+                </div>
+            </section>
+            <ul class="videoLightbox__episodes" aria-label="影音集數">
+                <li class="videoLightbox__episodeCard" aria-current="true">
+                    <div>
+                        <h3 id="videoCurrentEpisode">EP1</h3>
+                        <p id="videoEpisodeSummary">AI 主播 iKi</p>
+                    </div>
+                    <span>目前播放</span>
+                </li>
+                <li class="videoLightbox__episodeCard">
+                    <div><h3>EP2</h3><p>敬請期待</p></div>
+                </li>
+                <li class="videoLightbox__episodeCard">
+                    <div><h3>EP3</h3><p>敬請期待</p></div>
+                </li>
+            </ul>
         </div>
     </dialog>
     <script src="./js/wow.min.js"></script>
@@ -119,6 +156,6 @@
     <script type="text/javascript" src="./js/article-data.js?20260914"></script>
     <script type="text/javascript" src="./js/header-menu.js?20260915a"></script>
     <script type="text/javascript" src="./js/animation.js?20260915e"></script>
-    <script src="./js/home-videos.js?20261016"></script>
+    <script src="./js/home-videos.js?20261016b"></script>
 </body>
 </html>

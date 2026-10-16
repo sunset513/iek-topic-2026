@@ -3,17 +3,44 @@
 
     // Add videos here in their display order. start is measured in seconds.
     var videos = [
-        { id: 'BwfFtaZyA9g', title: '影片介紹', start: 1 }
+        {
+            id: 'BwfFtaZyA9g',
+            cardTitle: '影片介紹',
+            episode: 'EP1',
+            episodeTitle: 'AI 主播 iKi',
+            title: '跟著 AI 主播 iKi，掌握下一個十年的無人自主產業布局！',
+            description: [
+                '無人機只會送貨？工研院：全球 4 萬家新創正在搶進這條全新賽道！',
+                '能看見、會思考、懂應變—「實體 AI」正式走向台前！它不是為了取代人，而是延伸人類能力的關鍵基礎設施。'
+            ],
+            start: 1
+        }
     ];
     var list = document.getElementById('homeVideoList');
     var dialog = document.getElementById('videoLightbox');
     var player = document.getElementById('videoLightboxPlayer');
     var title = document.getElementById('videoLightboxTitle');
     var closeButton = document.getElementById('closeVideoLightbox');
-    if (!list || !dialog || !player || !title || !closeButton) { return; }
+    var episode = document.getElementById('videoLightboxEpisode');
+    var description = document.getElementById('videoLightboxDescription');
+    var currentEpisode = document.getElementById('videoCurrentEpisode');
+    var episodeSummary = document.getElementById('videoEpisodeSummary');
+    var shareButton = document.getElementById('shareVideo');
+    var copyButton = document.getElementById('copyVideoLink');
+    var panelCopyButton = document.getElementById('videoPanelCopy');
+    var sharePanel = document.getElementById('videoSharePanel');
+    var shareStatus = document.getElementById('videoShareStatus');
+    var shareUrl = document.getElementById('videoShareUrl');
+    var lineShare = document.getElementById('videoLineShare');
+    var facebookShare = document.getElementById('videoFacebookShare');
+
+    if (!list || !dialog || !player || !title || !closeButton || !episode || !description
+        || !currentEpisode || !episodeSummary || !shareButton || !copyButton || !panelCopyButton
+        || !sharePanel || !shareStatus || !shareUrl || !lineShare || !facebookShare) { return; }
 
     var trigger = null;
     var activeVideo = null;
+    var interactionVersion = 0;
     var scrollStyles = null;
     var backdropPointerDown = false;
     var state = 'closed';
@@ -22,6 +49,83 @@
     var motionTimer = null;
     var motionVersion = 0;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function videoUrl(video) {
+        var url = new URL('https://www.youtube.com/watch');
+        url.searchParams.set('v', video.id);
+        url.searchParams.set('t', video.start + 's');
+        return url.href;
+    }
+
+    function resetShareUi() {
+        sharePanel.hidden = true;
+        shareButton.setAttribute('aria-expanded', 'false');
+        shareStatus.textContent = '';
+        shareUrl.value = '';
+        lineShare.removeAttribute('href');
+        facebookShare.removeAttribute('href');
+    }
+
+    function setVideoDetails(video) {
+        title.textContent = video.title;
+        episode.textContent = video.episode;
+        currentEpisode.textContent = video.episode;
+        episodeSummary.textContent = video.episodeTitle;
+        description.replaceChildren();
+        video.description.forEach(function (text) {
+            var paragraph = document.createElement('p');
+            paragraph.textContent = text;
+            description.appendChild(paragraph);
+        });
+        resetShareUi();
+    }
+
+    function showShareOptions(url) {
+        shareUrl.value = url;
+        lineShare.href = 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url);
+        facebookShare.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+        sharePanel.hidden = false;
+        shareButton.setAttribute('aria-expanded', 'true');
+    }
+
+    function currentInteraction(version) {
+        return version === interactionVersion && state === 'open' && !!activeVideo;
+    }
+
+    async function copyVideoLink() {
+        if (state !== 'open' || !activeVideo) { return; }
+        var version = interactionVersion;
+        var url = videoUrl(activeVideo);
+        try {
+            if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+                throw new Error('Clipboard unavailable');
+            }
+            await navigator.clipboard.writeText(url);
+            if (currentInteraction(version)) { shareStatus.textContent = '已複製連結'; }
+        } catch (error) {
+            if (!currentInteraction(version)) { return; }
+            showShareOptions(url);
+            shareUrl.focus();
+            shareUrl.select();
+            shareStatus.textContent = '請複製已選取的連結';
+        }
+    }
+
+    async function shareVideo() {
+        if (state !== 'open' || !activeVideo) { return; }
+        var version = interactionVersion;
+        var data = { title: activeVideo.title, url: videoUrl(activeVideo) };
+        if (typeof navigator.share === 'function') {
+            try {
+                await navigator.share(data);
+                return;
+            } catch (error) {
+                if (error.name === 'AbortError' || !currentInteraction(version)) { return; }
+            }
+        }
+        if (currentInteraction(version)) { showShareOptions(data.url); }
+    }
+
 
     function setState(value) {
         state = value;
@@ -45,6 +149,8 @@
     }
 
     function restorePlaybackState() {
+        interactionVersion += 1;
+        resetShareUi();
         player.replaceChildren();
         if (scrollStyles) {
             scrollStyles.forEach(function (saved) {
@@ -173,6 +279,7 @@
 
     function closeVideo() {
         if (state === 'closed' || state === 'closing') { return; }
+        interactionVersion += 1;
         // Capture the current opening frame before cancelling, so an early close never jumps.
         var computed = window.getComputedStyle(dialog);
         var currentFrame = { transform: computed.transform, opacity: computed.opacity };
@@ -200,7 +307,8 @@
         trigger = button;
         activeVideo = video;
         var origin = thumbnailBounds();
-        title.textContent = video.title;
+        interactionVersion += 1;
+        setVideoDetails(video);
         showPoster();
         scrollStyles = [document.documentElement, document.body].map(function (element) {
             var saved = {
@@ -213,6 +321,7 @@
         });
         try {
             dialog.showModal();
+            dialog.scrollTop = 0;
         } catch (error) {
             finishClose();
             return;
@@ -259,7 +368,7 @@
         thumbnail.append(image, play);
         var label = document.createElement('span');
         label.className = 'homeVideos__title';
-        label.textContent = video.title;
+        label.textContent = video.cardTitle || video.title;
         button.append(thumbnail, label);
         button.addEventListener('click', function () { openVideo(video, button); });
         item.appendChild(button);
@@ -267,21 +376,32 @@
     });
     list.parentElement.hidden = videos.length === 0;
 
-    // Keep reverse tabbing from the first control inside the dialog as well.
+    // The inline share controls join the native dialog's keyboard focus cycle.
     dialog.addEventListener('keydown', function (event) {
         if (event.key !== 'Tab') { return; }
-        var iframe = player.querySelector('iframe');
-        if (event.shiftKey && document.activeElement === closeButton) {
+        var controls = Array.prototype.slice.call(dialog.querySelectorAll(
+            'button:not([disabled]), a[href], input:not([disabled]), iframe, [tabindex]'
+        )).filter(function (element) {
+            return element.tabIndex >= 0 && element.getClientRects().length > 0
+                && window.getComputedStyle(element).visibility !== 'hidden';
+        });
+        var first = controls[0];
+        var last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
             event.preventDefault();
-            (iframe || closeButton).focus();
-        } else if (!event.shiftKey && document.activeElement === iframe) {
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
             event.preventDefault();
-            closeButton.focus();
+            first.focus();
         }
     });
+
     document.addEventListener('focusin', function (event) {
         if (dialog.open && !dialog.contains(event.target)) { closeButton.focus(); }
     });
+    shareButton.addEventListener('click', shareVideo);
+    copyButton.addEventListener('click', copyVideoLink);
+    panelCopyButton.addEventListener('click', copyVideoLink);
     closeButton.addEventListener('click', closeVideo);
     dialog.addEventListener('cancel', function (event) {
         event.preventDefault();
