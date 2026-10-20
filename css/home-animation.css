@@ -187,6 +187,13 @@
     width: 205px;
     height: 35px;
 }
+.KeyVision__brands > img {
+    display: block;
+    width: min(407px, 90vw);
+    height: auto;
+    margin: 0;
+    object-fit: contain;
+}
 .index #Footer {
     position: static;
     color: #000;
