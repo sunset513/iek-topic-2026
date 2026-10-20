@@ -20,8 +20,9 @@
     }
 
     function articleLink(article) {
-        return '<div class="list"><a href="./article.html">'
-            + escapeHtml(article.title) + '</a></div>';
+        return '<div class="list"><a href="' + escapeHtml(article.href)
+            + '" target="_blank" rel="noopener">'
+            + escapeHtml(article.navLabel || article.title) + '</a></div>';
     }
 
     function submenu(section) {

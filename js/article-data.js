@@ -5,76 +5,61 @@
             label: '序言',
             color: '#003596',
             articles: [
-                { id: 'chairman-preface', title: '董事長序' },
-                { id: 'president-preface', title: '院長序' },
-                { id: 'vice-president-preface', title: '蘇協理序' }
+                { id: 'chairman-preface', title: '從「製造優勢」邁向「系統優勢」，臺灣迎向無人科技新世代', navLabel: '董事長序', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=140328896' },
+                { id: 'president-preface', title: '從需求出發，開啟無人科技自主新局', navLabel: '院長序', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=137825881' },
+                { id: 'vice-president-preface', title: '從「無人」走向「自主」： 打造臺灣下一波實體 AI 產業新優勢', navLabel: '蘇協理序', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=136119273' }
             ]
         },
         {
             id: 'chapter-1',
             label: '第一篇',
-            subtitle: '未來情境與需求篇',
+            subtitle: '未來情境與需求',
             color: '#0098c8',
             articles: [
-                { id: 'unmanned-future', title: '前言：無人科技大未來' },
-                { id: 'unmanned-life-and-industry', title: '無人科技重塑未來生活與產業運作' },
-                { id: 'autonomous-society', title: '自主化社會：全球無人科技研發趨勢與關鍵訊號' },
-                { id: 'unmanned-technology-clusters', title: '全球無人化科技聚落與新創微觀賽道' },
-                { id: 'unmanned-startup-cases', title: '社會視角下的無人科技新創案例' },
-                { id: 'european-unmanned-systems', title: '歐洲無人系統優勢發展：科研、監管與真實世界部署' }
+                { id: 'unmanned-future', title: '無人科技重構未來基礎建設', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=137120596' },
+                { id: 'unmanned-life-and-industry', title: '無人科技重塑未來生活與產業運作', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=140206447' },
+                { id: 'autonomous-society', title: '全球無人科技科研趨勢與關鍵訊號', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=135058902' },
+                { id: 'unmanned-technology-clusters', title: '全球無人化科技聚落與新創微觀賽道', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=134458534' },
+                { id: 'unmanned-startup-cases', title: '社會視角下的無人科技新創案例', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=143013375' },
+                { id: 'european-unmanned-systems', title: '無人系統優勢發展： 科研、監管與真實世界部署', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=141404826' }
             ]
         },
         {
             id: 'chapter-2',
             label: '第二篇',
-            subtitle: '從單點技術突破走向多元場域落地',
+            subtitle: '商用引爆點',
             color: '#ef5b16',
-            categories: [
-                {
-                    title: '民生服務',
-                    articles: [
-                        { id: 'autonomous-healthcare', title: '無人科技開啟自主健康管理時代' },
-                        { id: 'land-air-logistics', title: '打造陸空無人物流異質整合生態系' }
-                    ]
-                },
-                {
-                    title: '產業升級與永續發展',
-                    articles: [
-                        { id: 'unmanned-factory', title: '工業 5.0 時代無人工廠的人機新藍圖' },
-                        { id: 'energy-inspection', title: '能源資產探勘與無人巡檢新應用' },
-                        { id: 'environment-observation', title: '全球環境觀測體系重構與臺灣供應鏈契機' },
-                        { id: 'autonomous-vehicle-safety', title: '高性能材料賦能無人載具自主安全' }
-                    ]
-                },
-                {
-                    title: '安全治理',
-                    articles: [
-                        { id: 'satellite-to-6g', title: '從多軌衛星整合到 6G 自主通訊的戰略布局' }
-                    ]
-                }
+            articles: [
+                { id: 'autonomous-healthcare', title: '無人科技開啟自主健康管理時代', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=141529081' },
+                { id: 'land-air-logistics', title: '打造陸空無人物流異質整合生態系', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=139744497' },
+                { id: 'unmanned-factory', title: '工業 5.0 時代無人工廠的人機新藍圖', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=139670199' },
+                { id: 'energy-inspection', title: '能源資產探勘與無人巡檢新應用', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=140937792' },
+                { id: 'environment-observation', title: '全球環境觀測體系重構與新供應鏈契機', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=136302838' },
+                { id: 'autonomous-vehicle-safety', title: '高性能材料賦能無人載具自主安全', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=134938949' },
+                { id: 'satellite-to-6g', title: '從多軌衛星整合到 6G 自主通訊，滿足城市通訊韌性需求', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=141054798' }
             ]
         },
         {
             id: 'chapter-3',
             label: '第三篇',
-            subtitle: '國際無人社會的生態發展',
+            subtitle: '自主化時代的全球競逐',
             color: '#00a879',
             articles: [
-                { id: 'global-industry-trends', title: '國際無人科技產業發展現況與趨勢' },
-                { id: 'trusted-global-standards', title: '無人科技翻轉全球社會：打造可信標準與跨國新生態' },
-                { id: 'european-turning-point', title: '歐洲無人科技迎來轉折點：民防雙軌推進與次世代無人化變革' },
-                { id: 'human-machine-collaboration', title: '人機協同重塑勞動典範：打造化解缺工危機的 AI 與機器人整合架構' },
-                { id: 'physical-ai', title: '從螢幕算力到實體世界：無人系統驅動的全球實體 AI 新賽局' }
+                { id: 'global-industry-trends', title: '國際無人科技產業發展現況與趨勢', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=136192512' },
+                { id: 'trusted-global-standards', title: '打造可信標準與跨國新生態', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=142975159' },
+                { id: 'european-turning-point', title: '歐洲無人科技迎來轉折點：民防雙軌推進與次世代無人化變革', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=136983189' },
+                { id: 'human-machine-collaboration', title: '人機協作重塑勞動典範：打造化解缺工的 AI 與機器人整合架構', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=137161047' },
+                { id: 'physical-ai', title: '從螢幕算力到實體世界：無人系統驅動的全球實體 AI 新賽局', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=138227499' }
             ]
         },
         {
             id: 'conclusion',
             label: '結論',
-            subtitle: '從供應鏈到生態系角色',
+            subtitle: '台灣定位與國際合作',
             color: '#5f67ae',
             articles: [
-                { id: 'taiwan-positioning', title: '無人科技時代下的台灣定位與發展特色' },
-                { id: 'taiwan-strategy', title: '從台灣的機會與挑戰探討無人科技發展策略' }
+                { id: 'taiwan-positioning', title: '無人科技時代下的臺灣定位與發展特色', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=142061094' },
+                { id: 'taiwan-strategy', title: '臺灣無人科技的機會挑戰與國際合作策略', href: 'https://ieknet.iek.org.tw/iekrpt/rpt_open.aspx?rpt_idno=135168481' }
             ]
         }
     ];
