@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="email=no" />
+    <title>IEKTopics 2026</title>
+    <link rel="stylesheet" href="css/animate.css" />
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/home-animation.css?20260915n" rel="stylesheet">
+    <link href="css/header.css?20260915a" rel="stylesheet">
+    <link href="css/home-videos.css?20261020e" rel="stylesheet">
+    <link href="css/coming-soon.css?20261020a" rel="stylesheet">
+    <!--GTM：GA4-->
+    <script>
+        (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&amp;l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-T6LPJZQ');
+    </script>
+</head>
+<body class="index-page">
+    <div id="app" class="index">
+        <header id="header">
+            <div class="headerContent">
+                <div class="logo">
+                    <a href="./index.html" aria-label="IEK Topics 2026 首頁">
+                        <span class="logoArtwork" aria-hidden="true">
+                            <img src="./images/logo.png" alt="" draggable="false">
+                        </span>
+                        <span class="logoYear" aria-hidden="true">2026</span>
+                    </a>
+                </div>
+                <button type="button" id="menuBtn" aria-controls="site-nav" aria-expanded="false" aria-label="開啟選單">
+                    <span aria-hidden="true"></span>
+                </button>
+                <nav id="site-nav" aria-label="主選單">
+                    <ul class="mainMenu" id="main-menu"></ul>
+               </nav>
+           </div>
+        </header>
+        <main class="index__main">
+            <!-- 背景 -->
+            <div class="index__background top"></div>
+            <div class="index__background bottom"></div>
+            <div class="KeyVision">
+                <div class="container">
+                    <div class="KeyVision__main">
+                        <h1 class="KeyVision__headline">
+                            <strong class="KeyVision__headlineLead">啟自主</strong>
+                            <i class="KeyVision__headlineArrow"><img src="./images/Exclude.png" alt="" draggable="false"></i>
+                            <strong>無人科技</strong>
+                            <strong>百業新生</strong>
+                        </h1>
+                        <div class="KeyVision__animation" id="homeAnimation" aria-label="輪轉卡片與跑者動畫">
+                            <div class="KeyVision__cards" id="cardStage" aria-hidden="true">
+                                <div class="card-wrap" data-progress="0.02"><img src="./images/card-01.png" alt="" draggable="false"></div>
+                                <div class="card-wrap" data-progress="0.20"><img src="./images/card-02.png" alt="" draggable="false"></div>
+                                <div class="card-wrap" data-progress="0.38"><img src="./images/card-03.png" alt="" draggable="false"></div>
+                                <div class="card-wrap" data-progress="0.56"><img src="./images/card-04.png" alt="" draggable="false"></div>
+                                <div class="card-wrap" data-progress="0.74"><img src="./images/card-05.png" alt="" draggable="false"></div>
+                                <div class="card-wrap" data-progress="0.92"><img src="./images/card-06.png" alt="" draggable="false"></div>
+                            </div>
+                            <div class="KeyVision__runner" id="runnerStage" aria-hidden="true">
+                                <img id="runner" src="./images/runner-01.png?20260915" alt="" draggable="false">
+                            </div>
+                        </div>
+                        <div class="KeyVision__brands" aria-label="工研院與 IEK Consulting 品牌">
+                            <img src="./images/home-footer-logo.svg" alt="工業技術研究院 ITRI 與 IEK Consulting" draggable="false">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <aside class="floatBtn">
+            <a class="iek" href="https://ieknet.iek.org.tw" target="_blank">
+                <img src="./images/nav-iek.svg" alt="IEK" draggable="false">
+            </a>
+            <a class="youtube" href="https://www.youtube.com/user/ITRIIEK" target="_blank">
+                <img src="./images/nav-youtube.svg" alt="YouTube" draggable="false">
+            </a>
+            <a class="line" href="https://s.no8.io/link/channels/sjicz8Tp4T" target="_blank">
+                <img src="./images/nav-line.svg" alt="LINE" draggable="false">
+            </a>
+        </aside>
+    </div>
+    <section class="homeVideos" id="homeVideos" aria-label="首頁影片" hidden>
+        <button type="button" class="homeVideos__launcher" id="toggleVideoList" aria-label="開啟影片清單" aria-expanded="false" aria-controls="homeVideoPanel">
+            <img src="./images/iki-video-launcher.png" width="90" height="90" alt="" draggable="false">
+        </button>
+        <section class="homeVideos__panel" id="homeVideoPanel" aria-labelledby="homeVideoPanelTitle" hidden>
+            <div class="homeVideos__panelHeader">
+                <h2 id="homeVideoPanelTitle">影片介紹</h2>
+                <button type="button" class="homeVideos__panelClose" id="closeVideoList" aria-label="關閉影片清單">×</button>
+            </div>
+            <ul class="homeVideos__list" id="homeVideoList" aria-label="影片列表"></ul>
+        </section>
+    </section>
+    <dialog class="videoLightbox" id="videoLightbox" aria-label="影片介紹">
+        <button type="button" class="videoLightbox__close" id="closeVideoLightbox" aria-label="關閉影片" autofocus>×</button>
+        <div class="videoLightbox__player" id="videoLightboxPlayer"></div>
+        <label class="videoLightbox__preference" for="dismissVideoLightbox">
+            <input type="checkbox" id="dismissVideoLightbox">
+            <span>不再顯示</span>
+        </label>
+    </dialog>
+    <dialog class="articleNotice" id="articleNotice" aria-labelledby="articleNoticeMessage">
+        <button type="button" class="articleNotice__close" id="closeArticleNotice" aria-label="關閉預告訊息">×</button>
+        <p class="articleNotice__message" id="articleNoticeMessage">文章內容尚未公布、敬請期待</p>
+        <button type="button" class="articleNotice__confirm" id="confirmArticleNotice" autofocus>知道了</button>
+    </dialog>
+    <script src="./js/wow.min.js"></script>
+    <script type="text/javascript" src="./js/vendor.js?ad5e6671"></script>
+    <script type="text/javascript" src="./js/main.js?ad5e6671"></script>
+    <script type="text/javascript" src="./js/article-data.js?20261020a"></script>
+    <script type="text/javascript" src="./js/header-menu.js?20261020a"></script>
+    <script src="./js/coming-soon.js?20261020a"></script>
+    <script type="text/javascript" src="./js/animation.js?20260915e"></script>
+    <script src="./js/home-videos.js?20261020e"></script>
+</body>
+</html>
