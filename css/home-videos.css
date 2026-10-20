@@ -94,85 +94,59 @@
     overflow-wrap: anywhere;
 }
 .videoLightbox {
-    --video-blue: #0055a5;
-    --video-cyan: #00a1cc;
-    --video-teal: #20b5bd;
     position: fixed;
     inset: 0;
     box-sizing: border-box;
-    width: min(1280px, calc(100% - 32px));
+    width: min(1280px, calc(100% - 32px), calc((100vh - 136px) * 16 / 9));
+    width: min(1280px, calc(100% - 32px), calc((100dvh - 136px) * 16 / 9));
     max-width: none;
     max-height: calc(100vh - 32px);
     max-height: calc(100dvh - 32px);
     margin: auto;
     padding: 0;
-    overflow: auto;
+    overflow: visible;
     overscroll-behavior: contain;
     border: 0;
-    border-top: 6px solid var(--video-cyan);
-    border-radius: 0;
-    background: #fff;
-    color: var(--video-blue);
-    box-shadow: 0 16px 64px rgba(0, 0, 0, .35);
+    background: transparent;
+    color: #fff;
     transform-origin: top left;
 }
 .videoLightbox * { box-sizing: border-box; }
 .videoLightbox:not([open]) { display: none; }
-.videoLightbox::backdrop { background: rgba(0, 12, 30, .82); opacity: 0; }
+.videoLightbox[open] {
+    display: grid;
+    grid-template-rows: 44px auto 44px;
+    gap: 8px;
+}
+.videoLightbox::backdrop { background: rgba(0, 12, 30, .88); opacity: 0; }
 .videoLightbox[data-state="opening"]::backdrop,
 .videoLightbox[data-state="open"]::backdrop { opacity: 1; }
-.videoLightbox :is(button, a, input):focus-visible {
-    outline: 3px solid var(--video-blue);
+.videoLightbox :is(button, input):focus-visible {
+    outline: 3px solid #fff;
     outline-offset: 3px;
 }
-.videoLightbox__header {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 16px 48px;
-    border-bottom: 2px solid var(--video-cyan);
-    background: #fff;
-}
-.videoLightbox__heading {
-    margin: 0;
-    color: var(--video-cyan);
-    font-size: 28px;
-    font-weight: 500;
-    line-height: 1.4;
-    letter-spacing: 2px;
-}
 .videoLightbox__close {
-    flex: 0 0 44px;
+    justify-self: end;
     width: 44px;
     height: 44px;
     padding: 0;
     border: 0;
-    border-radius: 0;
-    background: #fff;
-    color: var(--video-blue);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, .3);
+    color: #fff;
     font: inherit;
-    font-size: 30px;
+    font-size: 32px;
     line-height: 1;
     cursor: pointer;
 }
-.videoLightbox__close:hover { background: #eaf6fa; }
-.videoLightbox__body { padding: 32px 48px 42px; }
-.videoLightbox__feature {
-    display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    gap: 36px;
-    align-items: center;
-}
+.videoLightbox__close:hover { background: rgba(255, 255, 255, .15); }
 .videoLightbox__player {
     position: relative;
     width: 100%;
     min-width: 0;
     aspect-ratio: 16 / 9;
     background: #000;
+    box-shadow: 0 16px 64px rgba(0, 0, 0, .35);
 }
 .videoLightbox__player iframe,
 .videoLightbox__poster {
@@ -184,124 +158,29 @@
     margin: 0;
     border: 0;
 }
-.videoLightbox__poster { object-fit: cover; }
-.videoLightbox__info { min-width: 0; overflow-wrap: anywhere; }
-.videoLightbox__episode {
-    margin: 0 0 12px;
-    color: var(--video-cyan);
-    font-size: 14px;
-    line-height: 1.7;
-    letter-spacing: 2px;
-}
-.videoLightbox__info h2 {
-    margin: 0;
-    color: var(--video-blue);
-    font-size: 27px;
-    font-weight: 500;
-    line-height: 1.7;
-}
-.videoLightbox__description {
-    margin-top: 20px;
-    color: #333;
-    font-size: 15px;
-    line-height: 1.9;
-}
-.videoLightbox__description p { margin: 0 0 13px; }
-.videoLightbox__description p:last-child { margin-bottom: 0; }
-.videoLightbox__actions,
-.videoLightbox__shareOptions { display: flex; flex-wrap: wrap; gap: 12px; }
-.videoLightbox__actions { margin-top: 28px; }
-.videoLightbox__actions button,
-.videoLightbox__shareOptions :is(button, a) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 9px 18px;
-    border: 1px solid var(--video-teal);
-    border-radius: 0;
-    background: #fff;
-    color: #087e8a;
-    font: inherit;
-    font-size: 14px;
-    line-height: 1.5;
-    text-decoration: none;
-    cursor: pointer;
-}
-.videoLightbox__actions button:first-child { background: var(--video-teal); color: #fff; }
-.videoLightbox__actions button:hover,
-.videoLightbox__shareOptions :is(button, a):hover { filter: brightness(.95); }
-.videoLightbox__sharePanel {
-    margin-top: 16px;
-    padding: 16px;
-    border: 1px solid #cde4ec;
-    background: #f6fafc;
-}
-.videoLightbox__sharePanel[hidden] { display: none; }
-.videoLightbox__shareHeading { margin: 0 0 12px; font-size: 16px; }
-.videoLightbox__shareOptions { margin-bottom: 16px; }
-.videoLightbox__shareOptions .videoLightbox__line { border-color: #06a94f; background: #06a94f; color: #fff; }
-.videoLightbox__shareOptions .videoLightbox__facebook { border-color: #0866ff; background: #0866ff; color: #fff; }
-.videoLightbox__sharePanel label { display: block; font-size: 13px; }
-.videoLightbox__sharePanel input {
-    display: block;
-    width: 100%;
-    min-width: 0;
-    margin-top: 6px;
-    padding: 10px;
-    border: 1px solid #cde4ec;
-    border-radius: 0;
-    background: #fff;
-    color: #202020;
-    font: inherit;
-    font-size: 14px;
-}
-.videoLightbox__status { min-height: 22px; margin: 8px 0 0; color: #087e8a; font-size: 13px; line-height: 1.7; }
-.videoLightbox__episodes {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
-    margin: 40px 0 0;
-    padding: 28px 0 0;
-    border-top: 1px solid #dce9ee;
-    list-style: none;
-}
-.videoLightbox__episodeCard {
+.videoLightbox__poster { object-fit: contain; }
+.videoLightbox__preference {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    min-width: 0;
-    padding: 20px;
-    border-top: 3px solid var(--video-cyan);
-    background: #f6fafc;
+    gap: 10px;
+    width: fit-content;
+    min-height: 44px;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
 }
-.videoLightbox__episodeCard:last-child { border-top-color: #21b7ac; }
-.videoLightbox__episodeCard[aria-current] { border-top-color: var(--video-blue); background: #eaf6fa; }
-.videoLightbox__episodeCard h3 { margin: 0 0 3px; color: #536b79; font-size: 20px; font-weight: 500; line-height: 1.7; }
-.videoLightbox__episodeCard p { margin: 0; color: #7b888e; font-size: 14px; line-height: 1.7; }
-.videoLightbox__episodeCard span { color: #6b858d; font-size: 13px; white-space: nowrap; }
-@media (max-width: 900px) {
-    .videoLightbox__header { padding: 16px 28px; }
-    .videoLightbox__body { padding: 28px; }
-    .videoLightbox__feature { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-    .videoLightbox__info h2 { font-size: 25px; }
+.videoLightbox__preference input {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: #20b5bd;
+    cursor: pointer;
 }
 @media (max-width: 768px) {
     .homeVideos { margin-bottom: 20px; padding: 0 12px; }
     .homeVideos__list { gap: 16px; }
-}
-@media (max-width: 680px) {
-    .videoLightbox__episodes { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 30px; padding-top: 22px; }
-    .videoLightbox__episodeCard { padding: 16px 18px; }
-}
-@media (max-width: 540px) {
-    .videoLightbox__header { padding: 14px 20px; }
-    .videoLightbox__heading { font-size: 24px; }
-    .videoLightbox__body { padding: 22px 20px 28px; }
-    .videoLightbox__info h2 { font-size: 23px; }
-    .videoLightbox__description { font-size: 14px; }
-    .videoLightbox__actions { margin-top: 22px; }
 }
 /* This stylesheet is home-only; remove the legacy 360px floor on small screens. */
 @media (max-width: 359px) {

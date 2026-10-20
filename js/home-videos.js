@@ -6,41 +6,24 @@
         {
             id: 'BwfFtaZyA9g',
             cardTitle: '影片介紹',
-            episode: 'EP1',
-            episodeTitle: 'AI 主播 iKi',
             title: '跟著 AI 主播 iKi，掌握下一個十年的無人自主產業布局！',
-            description: [
-                '無人機只會送貨？工研院：全球 4 萬家新創正在搶進這條全新賽道！',
-                '能看見、會思考、懂應變—「實體 AI」正式走向台前！它不是為了取代人，而是延伸人類能力的關鍵基礎設施。'
-            ],
             start: 1
         }
     ];
     var list = document.getElementById('homeVideoList');
     var dialog = document.getElementById('videoLightbox');
     var player = document.getElementById('videoLightboxPlayer');
-    var title = document.getElementById('videoLightboxTitle');
     var closeButton = document.getElementById('closeVideoLightbox');
-    var episode = document.getElementById('videoLightboxEpisode');
-    var description = document.getElementById('videoLightboxDescription');
-    var currentEpisode = document.getElementById('videoCurrentEpisode');
-    var episodeSummary = document.getElementById('videoEpisodeSummary');
-    var shareButton = document.getElementById('shareVideo');
-    var copyButton = document.getElementById('copyVideoLink');
-    var panelCopyButton = document.getElementById('videoPanelCopy');
-    var sharePanel = document.getElementById('videoSharePanel');
-    var shareStatus = document.getElementById('videoShareStatus');
-    var shareUrl = document.getElementById('videoShareUrl');
-    var lineShare = document.getElementById('videoLineShare');
-    var facebookShare = document.getElementById('videoFacebookShare');
+    var dismissCheckbox = document.getElementById('dismissVideoLightbox');
 
-    if (!list || !dialog || !player || !title || !closeButton || !episode || !description
-        || !currentEpisode || !episodeSummary || !shareButton || !copyButton || !panelCopyButton
-        || !sharePanel || !shareStatus || !shareUrl || !lineShare || !facebookShare) { return; }
+    if (!list || !dialog || !player || !closeButton || !dismissCheckbox) { return; }
 
+    var preferenceKey = 'iek-topic-2026:video-lightbox:dismissed';
+    var dismissed = false;
+    var storageAvailable = true;
     var trigger = null;
     var activeVideo = null;
-    var interactionVersion = 0;
+    var automaticOpen = false;
     var scrollStyles = null;
     var backdropPointerDown = false;
     var state = 'closed';
@@ -50,82 +33,31 @@
     var motionVersion = 0;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    function videoUrl(video) {
-        var url = new URL('https://www.youtube.com/watch');
-        url.searchParams.set('v', video.id);
-        url.searchParams.set('t', video.start + 's');
-        return url.href;
-    }
-
-    function resetShareUi() {
-        sharePanel.hidden = true;
-        shareButton.setAttribute('aria-expanded', 'false');
-        shareStatus.textContent = '';
-        shareUrl.value = '';
-        lineShare.removeAttribute('href');
-        facebookShare.removeAttribute('href');
-    }
-
-    function setVideoDetails(video) {
-        title.textContent = video.title;
-        episode.textContent = video.episode;
-        currentEpisode.textContent = video.episode;
-        episodeSummary.textContent = video.episodeTitle;
-        description.replaceChildren();
-        video.description.forEach(function (text) {
-            var paragraph = document.createElement('p');
-            paragraph.textContent = text;
-            description.appendChild(paragraph);
-        });
-        resetShareUi();
-    }
-
-    function showShareOptions(url) {
-        shareUrl.value = url;
-        lineShare.href = 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url);
-        facebookShare.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
-        sharePanel.hidden = false;
-        shareButton.setAttribute('aria-expanded', 'true');
-    }
-
-    function currentInteraction(version) {
-        return version === interactionVersion && state === 'open' && !!activeVideo;
-    }
-
-    async function copyVideoLink() {
-        if (state !== 'open' || !activeVideo) { return; }
-        var version = interactionVersion;
-        var url = videoUrl(activeVideo);
-        try {
-            if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
-                throw new Error('Clipboard unavailable');
-            }
-            await navigator.clipboard.writeText(url);
-            if (currentInteraction(version)) { shareStatus.textContent = '已複製連結'; }
-        } catch (error) {
-            if (!currentInteraction(version)) { return; }
-            showShareOptions(url);
-            shareUrl.focus();
-            shareUrl.select();
-            shareStatus.textContent = '請複製已選取的連結';
-        }
-    }
-
-    async function shareVideo() {
-        if (state !== 'open' || !activeVideo) { return; }
-        var version = interactionVersion;
-        var data = { title: activeVideo.title, url: videoUrl(activeVideo) };
-        if (typeof navigator.share === 'function') {
+    function readDismissed() {
+        if (storageAvailable) {
             try {
-                await navigator.share(data);
-                return;
+                dismissed = window.localStorage.getItem(preferenceKey) === '1';
             } catch (error) {
-                if (error.name === 'AbortError' || !currentInteraction(version)) { return; }
+                storageAvailable = false;
             }
         }
-        if (currentInteraction(version)) { showShareOptions(data.url); }
+        return dismissed;
     }
 
+    function saveDismissed() {
+        dismissed = dismissCheckbox.checked;
+        if (!storageAvailable) { return; }
+        try {
+            if (dismissed) {
+                window.localStorage.setItem(preferenceKey, '1');
+            } else {
+                window.localStorage.removeItem(preferenceKey);
+            }
+        } catch (error) {
+            // Keep the choice for this page even when browser storage is unavailable.
+            storageAvailable = false;
+        }
+    }
 
     function setState(value) {
         state = value;
@@ -149,8 +81,6 @@
     }
 
     function restorePlaybackState() {
-        interactionVersion += 1;
-        resetShareUi();
         player.replaceChildren();
         if (scrollStyles) {
             scrollStyles.forEach(function (saved) {
@@ -165,6 +95,7 @@
         var previousTrigger = trigger;
         trigger = null;
         activeVideo = null;
+        automaticOpen = false;
         backdropPointerDown = false;
         if (previousTrigger && previousTrigger.isConnected) {
             previousTrigger.focus({ preventScroll: true });
@@ -196,7 +127,7 @@
         var iframe = document.createElement('iframe');
         iframe.title = activeVideo.title;
         iframe.src = 'https://www.youtube.com/embed/' + activeVideo.id
-            + '?start=' + activeVideo.start + '&autoplay=1&controls=1&playsinline=1';
+            + '?start=' + activeVideo.start + '&autoplay=1&mute=1&controls=1&playsinline=1';
         iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
         iframe.allowFullscreen = true;
         iframe.referrerPolicy = 'strict-origin-when-cross-origin';
@@ -279,7 +210,6 @@
 
     function closeVideo() {
         if (state === 'closed' || state === 'closing') { return; }
-        interactionVersion += 1;
         // Capture the current opening frame before cancelling, so an early close never jumps.
         var computed = window.getComputedStyle(dialog);
         var currentFrame = { transform: computed.transform, opacity: computed.opacity };
@@ -291,24 +221,28 @@
             closeButton.focus({ preventScroll: true });
         }
         var bounds = dialog.getBoundingClientRect();
-        var targetFrame = thumbnailFrame(thumbnailBounds(), bounds);
+        var targetFrame = automaticOpen
+            ? { transform: 'none', opacity: 0 }
+            : thumbnailFrame(thumbnailBounds(), bounds);
         setState('closing');
         backdropPointerDown = false;
         animateDialog([currentFrame, targetFrame], 260, 'cubic-bezier(0.4, 0, 1, 1)', finishClose, backdropOpacity);
     }
 
-    function openVideo(video, button) {
+    function openVideo(video, button, automatic) {
         if (state !== 'closed' || dialog.open) { return; }
         if (typeof dialog.showModal !== 'function') {
+            if (automatic) { return; }
             window.open('https://www.youtube.com/watch?v=' + video.id + '&t=' + video.start + 's',
-                '_blank', 'noopener,noreferrer');
+                '_blank', 'noopener');
             return;
         }
-        trigger = button;
+        trigger = button || list.querySelector('.homeVideos__card');
         activeVideo = video;
-        var origin = thumbnailBounds();
-        interactionVersion += 1;
-        setVideoDetails(video);
+        automaticOpen = !!automatic;
+        var origin = automaticOpen ? null : thumbnailBounds();
+        dialog.setAttribute('aria-label', '影片介紹：' + video.title);
+        dismissCheckbox.checked = readDismissed();
         showPoster();
         scrollStyles = [document.documentElement, document.body].map(function (element) {
             var saved = {
@@ -329,10 +263,11 @@
         var bounds = dialog.getBoundingClientRect();
         setState('opening');
         closeButton.focus({ preventScroll: true });
-        animateDialog([
-            thumbnailFrame(origin, bounds),
-            { transform: 'none', opacity: 1 }
-        ], 320, 'cubic-bezier(0.22, 1, 0.36, 1)', completeOpen, 0);
+        var frames = automaticOpen
+            ? [{ opacity: 0 }, { opacity: 1 }]
+            : [thumbnailFrame(origin, bounds), { transform: 'none', opacity: 1 }];
+        animateDialog(frames, automaticOpen ? 200 : 320,
+            'cubic-bezier(0.22, 1, 0.36, 1)', completeOpen, 0);
     }
 
     function settleForResize() {
@@ -376,10 +311,10 @@
     });
     list.parentElement.hidden = videos.length === 0;
 
-    // The inline share controls join the native dialog's keyboard focus cycle.
-    dialog.addEventListener('keydown', function (event) {
+    function trapDialogFocus(event) {
         if (event.key !== 'Tab') { return; }
-        var controls = Array.prototype.slice.call(dialog.querySelectorAll(
+        var modal = event.currentTarget;
+        var controls = Array.prototype.slice.call(modal.querySelectorAll(
             'button:not([disabled]), a[href], input:not([disabled]), iframe, [tabindex]'
         )).filter(function (element) {
             return element.tabIndex >= 0 && element.getClientRects().length > 0
@@ -387,6 +322,7 @@
         });
         var first = controls[0];
         var last = controls[controls.length - 1];
+        if (!first) { return; }
         if (event.shiftKey && document.activeElement === first) {
             event.preventDefault();
             last.focus();
@@ -394,14 +330,14 @@
             event.preventDefault();
             first.focus();
         }
-    });
-
+    }
+    dialog.addEventListener('keydown', trapDialogFocus);
     document.addEventListener('focusin', function (event) {
-        if (dialog.open && !dialog.contains(event.target)) { closeButton.focus(); }
+        if (dialog.open && !dialog.contains(event.target)) {
+            closeButton.focus({ preventScroll: true });
+        }
     });
-    shareButton.addEventListener('click', shareVideo);
-    copyButton.addEventListener('click', copyVideoLink);
-    panelCopyButton.addEventListener('click', copyVideoLink);
+    dismissCheckbox.addEventListener('change', saveDismissed);
     closeButton.addEventListener('click', closeVideo);
     dialog.addEventListener('cancel', function (event) {
         event.preventDefault();
@@ -410,8 +346,8 @@
     dialog.addEventListener('close', function () {
         if (!dialog.open && state !== 'closed') { finishClose(); }
     });
-    function outsideDialog(event) {
-        var bounds = dialog.getBoundingClientRect();
+    function outsideDialog(event, modal) {
+        var bounds = (modal || dialog).getBoundingClientRect();
         return event.clientX < bounds.left || event.clientX > bounds.right
             || event.clientY < bounds.top || event.clientY > bounds.bottom;
     }
@@ -429,4 +365,8 @@
         if (reducedMotion.matches) { settleForResize(); }
     });
     window.addEventListener('pagehide', finishClose);
+
+    if (videos.length && !readDismissed()) {
+        openVideo(videos[0], null, true);
+    }
 })(window, document);
