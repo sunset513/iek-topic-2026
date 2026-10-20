@@ -26,6 +26,13 @@ body.descriptionBody {
     letter-spacing: 1px;
 }
 
+/* The current template uses article-background.png on the body. */
+.article::before,
+.article::after {
+    content: none;
+    background-image: none;
+}
+
 .article__wrap {
     position: relative;
     z-index: 1;
