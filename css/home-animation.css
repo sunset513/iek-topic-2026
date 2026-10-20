@@ -217,9 +217,30 @@
         padding: 0 15px;
     }
     .KeyVision__animation {
-        width: min(100%, 1140px, calc((100vh - 221px) * 1.38));
+        --mobile-stage-width: min(calc(100vw - 30px), 1140px, calc((100vh - 221px) * 1.38));
+        --mobile-card-width: clamp(70px, calc(var(--mobile-stage-width) * .15), 165px);
+        width: var(--mobile-stage-width);
+        flex: 0 0 auto;
         height: auto;
-        min-height: 0;
+        /* Allow for 3D projection, shadows and the runner's vertical movement. */
+        min-height: calc(var(--mobile-card-width) * 685 / 180 * 1.2 + 48px);
+        margin-top: 12px;
+        overflow: hidden;
+    }
+    /* Keep the moving artwork inside the space below the mobile headline. */
+    .KeyVision__cards,
+    .KeyVision__runner {
+        transform: none;
+    }
+    .KeyVision__cards .card-wrap {
+        --card-width: var(--mobile-card-width);
+        top: 50%;
+    }
+    .KeyVision__runner {
+        bottom: 16px;
+    }
+    .KeyVision__brands {
+        margin-top: 20px;
     }
 }
 @media (max-width: 768px) {
@@ -236,11 +257,9 @@
         padding: 0;
     }
     .KeyVision__animation {
+        --mobile-stage-width: min(100vw, 1140px, calc((100vh - 221px) * 1.38));
+        --mobile-card-width: clamp(64px, 20vw, 125px);
         height: clamp(280px, 72vw, 780px);
-        min-height: 0;
-    }
-    .KeyVision__cards .card-wrap {
-        --card-width: clamp(64px, 20vw, 125px);
     }
     .KeyVision__runner #runner {
         width: 54%;
@@ -253,7 +272,7 @@
     }
     .KeyVision__brands {
         gap: 8px;
-        margin-top: 4px;
+        margin-top: 20px;
         padding: 0 8px;
     }
     .KeyVision__brand--iek {
