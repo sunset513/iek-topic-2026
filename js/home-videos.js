@@ -5,18 +5,35 @@
     var videos = [
         {
             id: 'BwfFtaZyA9g',
-            cardTitle: '影片介紹',
+            cardTitle: '無人自主產業新布局！',
+            title: '跟著 AI 主播 iKi，掌握下一個十年的無人自主產業布局！',
+            start: 1
+        },
+        {
+            id: 'BwfFtaZyA9g',
+            cardTitle: '無人自主產業新布局！',
+            title: '跟著 AI 主播 iKi，掌握下一個十年的無人自主產業布局！',
+            start: 1
+        },
+        {
+            id: 'BwfFtaZyA9g',
+            cardTitle: '無人自主產業新布局！',
             title: '跟著 AI 主播 iKi，掌握下一個十年的無人自主產業布局！',
             start: 1
         }
     ];
+    var widget = document.getElementById('homeVideos');
+    var launcher = document.getElementById('toggleVideoList');
+    var panel = document.getElementById('homeVideoPanel');
+    var panelCloseButton = document.getElementById('closeVideoList');
     var list = document.getElementById('homeVideoList');
     var dialog = document.getElementById('videoLightbox');
     var player = document.getElementById('videoLightboxPlayer');
     var closeButton = document.getElementById('closeVideoLightbox');
     var dismissCheckbox = document.getElementById('dismissVideoLightbox');
 
-    if (!list || !dialog || !player || !closeButton || !dismissCheckbox) { return; }
+    if (!widget || !launcher || !panel || !panelCloseButton || !list
+        || !dialog || !player || !closeButton || !dismissCheckbox) { return; }
 
     var preferenceKey = 'iek-topic-2026:video-lightbox:dismissed';
     var dismissed = false;
@@ -31,6 +48,10 @@
     var backdropMotion = null;
     var motionTimer = null;
     var motionVersion = 0;
+    var listState = 'closed';
+    var listMotion = null;
+    var listMotionTimer = null;
+    var listMotionVersion = 0;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     function readDismissed() {
@@ -57,6 +78,100 @@
             // Keep the choice for this page even when browser storage is unavailable.
             storageAvailable = false;
         }
+    }
+
+    function cancelListMotion() {
+        listMotionVersion += 1;
+        window.clearTimeout(listMotionTimer);
+        listMotionTimer = null;
+        if (listMotion) {
+            var previous = listMotion;
+            listMotion = null;
+            previous.cancel();
+        }
+    }
+
+    function finishVideoList(open) {
+        cancelListMotion();
+        listState = open ? 'open' : 'closed';
+        panel.dataset.state = listState;
+        panel.hidden = !open;
+        panel.inert = false;
+    }
+
+    function collapsedVideoListFrame() {
+        return {
+            transform: 'translateY(' + (launcher.offsetHeight + 12) + 'px) scale('
+                + launcher.offsetWidth / panel.offsetWidth + ', '
+                + launcher.offsetHeight / panel.offsetHeight + ')',
+            opacity: 0
+        };
+    }
+
+    function animateVideoList(from, to, opening) {
+        cancelListMotion();
+        var version = listMotionVersion;
+        function settle() {
+            if (version === listMotionVersion) { finishVideoList(opening); }
+        }
+        if (reducedMotion.matches || typeof panel.animate !== 'function') {
+            settle();
+            return;
+        }
+        var duration = opening ? 320 : 260;
+        try {
+            listMotion = panel.animate([from, to], {
+                duration: duration,
+                easing: opening ? 'cubic-bezier(0.22, 1, 0.36, 1)' : 'cubic-bezier(0.4, 0, 1, 1)',
+                fill: 'both'
+            });
+            listMotion.finished.then(settle, settle);
+            listMotionTimer = window.setTimeout(settle, duration + 150);
+        } catch (error) {
+            settle();
+        }
+    }
+
+    function closeVideoList(returnFocus, immediate) {
+        launcher.setAttribute('aria-expanded', 'false');
+        launcher.setAttribute('aria-label', '開啟影片清單');
+        if (returnFocus || panel.contains(document.activeElement)) {
+            launcher.focus({ preventScroll: true });
+        }
+        if (immediate || listState === 'closed') {
+            finishVideoList(false);
+            return;
+        }
+        if (listState === 'closing') { return; }
+        var current = window.getComputedStyle(panel);
+        var from = { transform: current.transform, opacity: current.opacity };
+        listState = 'closing';
+        panel.dataset.state = listState;
+        panel.inert = true;
+        animateVideoList(from, collapsedVideoListFrame(), false);
+    }
+
+    function toggleVideoList() {
+        if (state !== 'closed' || dialog.open) { return; }
+        if (listState === 'opening' || listState === 'open') {
+            closeVideoList(true);
+            return;
+        }
+        var from = null;
+        if (listState === 'closing') {
+            var current = window.getComputedStyle(panel);
+            from = { transform: current.transform, opacity: current.opacity };
+        } else {
+            list.scrollTop = 0;
+        }
+        panel.hidden = false;
+        panel.inert = false;
+        listState = 'opening';
+        panel.dataset.state = listState;
+        launcher.setAttribute('aria-expanded', 'true');
+        launcher.setAttribute('aria-label', '關閉影片清單');
+        panelCloseButton.focus({ preventScroll: true });
+        animateVideoList(from || collapsedVideoListFrame(), { transform: 'none', opacity: 1 }, true);
     }
 
     function setState(value) {
@@ -112,9 +227,7 @@
 
     function showPoster() {
         var image = document.createElement('img');
-        var thumbnail = trigger && trigger.querySelector('.homeVideos__thumbnail img');
-        image.src = thumbnail && (thumbnail.currentSrc || thumbnail.src)
-            || 'https://i.ytimg.com/vi/' + activeVideo.id + '/hqdefault.jpg';
+        image.src = 'https://i.ytimg.com/vi/' + activeVideo.id + '/hqdefault.jpg';
         image.className = 'videoLightbox__poster';
         image.alt = '';
         image.decoding = 'async';
@@ -175,13 +288,13 @@
         }
     }
 
-    function thumbnailBounds() {
-        var thumbnail = trigger && trigger.querySelector('.homeVideos__thumbnail');
+    function thumbnailBounds(button) {
+        var thumbnail = button && button.querySelector('.homeVideos__thumbnail');
         if (!thumbnail || !thumbnail.isConnected) { return null; }
         var bounds = thumbnail.getBoundingClientRect();
         var viewportWidth = document.documentElement.clientWidth;
         var viewportHeight = window.innerHeight;
-        var listBounds = list.getBoundingClientRect();
+        var listBounds = panel.getBoundingClientRect();
         if (bounds.width <= 0 || bounds.height <= 0
             || bounds.right <= Math.max(0, listBounds.left)
             || bounds.left >= Math.min(viewportWidth, listBounds.right)
@@ -223,7 +336,7 @@
         var bounds = dialog.getBoundingClientRect();
         var targetFrame = automaticOpen
             ? { transform: 'none', opacity: 0 }
-            : thumbnailFrame(thumbnailBounds(), bounds);
+            : thumbnailFrame(null, bounds);
         setState('closing');
         backdropPointerDown = false;
         animateDialog([currentFrame, targetFrame], 260, 'cubic-bezier(0.4, 0, 1, 1)', finishClose, backdropOpacity);
@@ -233,14 +346,16 @@
         if (state !== 'closed' || dialog.open) { return; }
         if (typeof dialog.showModal !== 'function') {
             if (automatic) { return; }
+            closeVideoList(true, true);
             window.open('https://www.youtube.com/watch?v=' + video.id + '&t=' + video.start + 's',
                 '_blank', 'noopener');
             return;
         }
-        trigger = button || list.querySelector('.homeVideos__card');
+        var origin = automatic ? null : thumbnailBounds(button);
+        closeVideoList(false, true);
+        trigger = launcher;
         activeVideo = video;
         automaticOpen = !!automatic;
-        var origin = automaticOpen ? null : thumbnailBounds();
         dialog.setAttribute('aria-label', '影片介紹：' + video.title);
         dismissCheckbox.checked = readDismissed();
         showPoster();
@@ -271,6 +386,9 @@
     }
 
     function settleForResize() {
+        if (listState === 'opening' || listState === 'closing') {
+            finishVideoList(listState === 'opening');
+        }
         if (state === 'opening') {
             cancelMotion();
             completeOpen();
@@ -309,7 +427,20 @@
         item.appendChild(button);
         list.appendChild(item);
     });
-    list.parentElement.hidden = videos.length === 0;
+    widget.hidden = videos.length === 0;
+
+    launcher.addEventListener('click', toggleVideoList);
+    panelCloseButton.addEventListener('click', function () { closeVideoList(true); });
+    document.addEventListener('click', function (event) {
+        if (!panel.hidden && !widget.contains(event.target)) { closeVideoList(false); }
+    }, true);
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !panel.hidden && !dialog.open) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            closeVideoList(true);
+        }
+    }, true);
 
     function trapDialogFocus(event) {
         if (event.key !== 'Tab') { return; }
@@ -364,7 +495,10 @@
     reducedMotion.addEventListener('change', function () {
         if (reducedMotion.matches) { settleForResize(); }
     });
-    window.addEventListener('pagehide', finishClose);
+    window.addEventListener('pagehide', function () {
+        closeVideoList(false, true);
+        finishClose();
+    });
 
     if (videos.length && !readDismissed()) {
         openVideo(videos[0], null, true);

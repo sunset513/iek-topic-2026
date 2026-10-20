@@ -1,57 +1,124 @@
-/* Home video cards and native dialog lightbox. */
+/* Home-only floating video list and native player dialog. */
 .homeVideos {
-    position: relative;
-    z-index: 4;
+    --video-launcher-size: 90px;
+    --video-edge: 24px;
+    --video-right: max(var(--video-edge), env(safe-area-inset-right, 0px));
+    --video-bottom: max(var(--video-edge), env(safe-area-inset-bottom, 0px));
+    position: fixed;
+    right: var(--video-right);
+    bottom: var(--video-bottom);
+    z-index: 120;
     box-sizing: border-box;
-    width: 100%;
-    min-width: 0;
-    margin: 0 0 28px;
-    padding: 0 16px;
+    width: var(--video-launcher-size);
+    margin: 0;
+    padding: 0;
 }
-.homeVideos[hidden] { display: none; }
+.homeVideos * { box-sizing: border-box; }
+.homeVideos[hidden],
+.homeVideos__panel[hidden] { display: none; }
+body.active .homeVideos { visibility: hidden; pointer-events: none; }
+.homeVideos__launcher {
+    display: block;
+    width: var(--video-launcher-size);
+    height: var(--video-launcher-size);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.homeVideos__launcher img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    object-fit: contain;
+}
+.homeVideos button:focus-visible {
+    outline: 3px solid #0055a5;
+    outline-offset: 4px;
+}
+.homeVideos__panel {
+    position: absolute;
+    right: 0;
+    bottom: calc(var(--video-launcher-size) + 12px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: min(400px, calc(100vw - var(--video-right) - var(--video-edge)));
+    max-height: calc(100vh - var(--video-bottom) - var(--video-launcher-size) - 12px - var(--video-edge));
+    max-height: calc(100dvh - var(--video-bottom) - var(--video-launcher-size) - 12px - var(--video-edge));
+    padding: 22px;
+    overflow: hidden;
+    border: 2px solid #62b5ba;
+    border-radius: 24px;
+    background: #eff7f8;
+    box-shadow: 0 8px 32px rgba(0, 45, 65, .16);
+    color: #161616;
+    transform-origin: bottom right;
+}
+.homeVideos__panel[data-state="closing"] { pointer-events: none; }
+.homeVideos__panelHeader {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.homeVideos__panelHeader h2 {
+    margin: 0;
+    color: #62b5ba;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+.homeVideos__panelClose {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #bdbdbd;
+    color: #fff;
+    font: inherit;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+.homeVideos__panelClose:hover { background: #999; }
 .homeVideos__list {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 24px;
+    flex-direction: column;
+    gap: 28px;
     width: 100%;
-    max-width: 100%;
+    min-height: 0;
     margin: 0;
-    padding: 0 4px 14px;
-    box-sizing: border-box;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x proximity;
+    padding: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
     list-style: none;
 }
-.homeVideos__item {
-    flex: 0 0 min(320px, 80vw);
-    min-width: 0;
-    scroll-snap-align: start;
-}
+.homeVideos__item { flex: 0 0 auto; min-width: 0; }
 .homeVideos__card {
     display: block;
     width: 100%;
     padding: 0;
-    overflow: hidden;
-    border: 1px solid #dbe4ee;
-    border-radius: 12px;
-    background: #fff;
-    color: #004ea2;
+    border: 0;
+    background: transparent;
+    color: #161616;
     font: inherit;
     text-align: left;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 78, 162, .08);
 }
-.homeVideos__card:focus-visible,
-.videoLightbox__close:focus-visible {
-    outline: 3px solid #004ea2;
-    outline-offset: 3px;
-}
+.homeVideos .homeVideos__card:focus-visible { outline-offset: -3px; }
 .homeVideos__thumbnail {
     position: relative;
     display: block;
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    border-radius: 16px 16px 0 0;
     background: #102b49;
 }
 .homeVideos__thumbnail img {
@@ -66,32 +133,61 @@
     inset: 0;
     display: grid;
     place-items: center;
-    background: rgba(0, 0, 0, .12);
+    background: rgba(0, 0, 0, .08);
 }
 .homeVideos__play::before {
     content: '';
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    background: rgba(0, 78, 162, .92);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, .2);
+    background: rgba(0, 53, 150, .9);
 }
 .homeVideos__play::after {
     content: '';
     position: absolute;
     margin-left: 4px;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-left: 16px solid #fff;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+    border-left: 18px solid #fff;
 }
-.homeVideos__card:hover .homeVideos__play { background: rgba(0, 0, 0, .25); }
+.homeVideos__card:hover .homeVideos__play { background: rgba(0, 0, 0, .2); }
 .homeVideos__title {
     display: block;
-    padding: 14px 16px;
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 1.5;
+    padding-top: 12px;
+    color: #161616;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.45;
     overflow-wrap: anywhere;
+}
+@media (min-width: 901px) {
+    /* Reserve the heading, captions and gaps so three 16:9 cards fit vertically. */
+    .homeVideos__panel {
+        width: min(280px, calc((100vh - var(--video-bottom) - var(--video-launcher-size) - 12px - var(--video-edge) - 128px) * 16 / 27));
+        width: min(280px, calc((100dvh - var(--video-bottom) - var(--video-launcher-size) - 12px - var(--video-edge) - 128px) * 16 / 27));
+        gap: 12px;
+        padding: 14px;
+    }
+    .homeVideos__panelHeader h2 { font-size: 24px; }
+    .homeVideos__panelClose {
+        flex-basis: 36px;
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+    }
+    .homeVideos__list { gap: 12px; }
+    .homeVideos__thumbnail { border-radius: 10px 10px 0 0; }
+    .homeVideos__play::before { width: 40px; height: 40px; }
+    .homeVideos__play::after {
+        border-top-width: 7px;
+        border-bottom-width: 7px;
+        border-left-width: 12px;
+    }
+    .homeVideos__title {
+        padding-top: 6px;
+        font-size: 14px;
+        line-height: 1.4;
+    }
 }
 .videoLightbox {
     position: fixed;
@@ -179,8 +275,10 @@
     cursor: pointer;
 }
 @media (max-width: 768px) {
-    .homeVideos { margin-bottom: 20px; padding: 0 12px; }
-    .homeVideos__list { gap: 16px; }
+    .homeVideos { --video-launcher-size: 72px; --video-edge: 16px; }
+    .homeVideos__panel { padding: 20px; }
+    .homeVideos__panelHeader h2 { font-size: 28px; }
+    .homeVideos__title { font-size: 18px; }
 }
 /* This stylesheet is home-only; remove the legacy 360px floor on small screens. */
 @media (max-width: 359px) {
