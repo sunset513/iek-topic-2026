@@ -33,6 +33,20 @@ body.active .homeVideos { visibility: hidden; pointer-events: none; }
     height: 100%;
     margin: 0;
     object-fit: contain;
+    animation: homeVideoFloat 3.2s ease-in-out infinite;
+}
+.homeVideos__launcher:hover img,
+.homeVideos__launcher:focus-visible img { animation-play-state: paused; }
+.homeVideos[data-list-state]:not([data-list-state="closed"]) .homeVideos__launcher {
+    visibility: hidden;
+    pointer-events: none;
+}
+.homeVideos[data-list-state]:not([data-list-state="closed"]) .homeVideos__launcher img {
+    animation-play-state: paused;
+}
+@keyframes homeVideoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
 .homeVideos button:focus-visible {
     outline: 3px solid #0055a5;
@@ -41,13 +55,13 @@ body.active .homeVideos { visibility: hidden; pointer-events: none; }
 .homeVideos__panel {
     position: absolute;
     right: 0;
-    bottom: calc(var(--video-launcher-size) + 12px);
+    bottom: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: min(400px, calc(100vw - var(--video-right) - var(--video-edge)));
-    max-height: calc(100vh - var(--video-bottom) - var(--video-launcher-size) - 12px - var(--video-edge));
-    max-height: calc(100dvh - var(--video-bottom) - var(--video-launcher-size) - 12px - var(--video-edge));
+    max-height: calc(100vh - var(--video-bottom) - var(--video-edge));
+    max-height: calc(100dvh - var(--video-bottom) - var(--video-edge));
     padding: 22px;
     overflow: hidden;
     border: 2px solid #62b5ba;
@@ -163,8 +177,8 @@ body.active .homeVideos { visibility: hidden; pointer-events: none; }
 @media (min-width: 901px) {
     /* Reserve the heading, captions and gaps so three 16:9 cards fit vertically. */
     .homeVideos__panel {
-        width: min(280px, calc((100vh - var(--video-bottom) - var(--video-launcher-size) - 12px - var(--video-edge) - 128px) * 16 / 27));
-        width: min(280px, calc((100dvh - var(--video-bottom) - var(--video-launcher-size) - 12px - var(--video-edge) - 128px) * 16 / 27));
+        width: min(280px, calc((100vh - var(--video-bottom) - var(--video-edge) - 128px) * 16 / 27));
+        width: min(280px, calc((100dvh - var(--video-bottom) - var(--video-edge) - 128px) * 16 / 27));
         gap: 12px;
         padding: 14px;
     }
@@ -279,6 +293,9 @@ body.active .homeVideos { visibility: hidden; pointer-events: none; }
     .homeVideos__panel { padding: 20px; }
     .homeVideos__panelHeader h2 { font-size: 28px; }
     .homeVideos__title { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .homeVideos__launcher img { animation: none; }
 }
 /* This stylesheet is home-only; remove the legacy 360px floor on small screens. */
 @media (max-width: 359px) {

@@ -52,6 +52,7 @@
     var listMotion = null;
     var listMotionTimer = null;
     var listMotionVersion = 0;
+    var listReturnFocus = false;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     function readDismissed() {
@@ -91,17 +92,32 @@
         }
     }
 
+    function setListState(value) {
+        listState = value;
+        panel.dataset.state = value;
+        widget.dataset.listState = value;
+        launcher.inert = value !== 'closed';
+    }
+
     function finishVideoList(open) {
         cancelListMotion();
-        listState = open ? 'open' : 'closed';
-        panel.dataset.state = listState;
+        setListState(open ? 'open' : 'closed');
         panel.hidden = !open;
         panel.inert = false;
+        if (!open && listReturnFocus) {
+            listReturnFocus = false;
+            var active = document.activeElement;
+            // Restore focus after the icon is visible, without taking focus from
+            // another control (or dialog) activated by an outside click.
+            if (!active || active === document.body || active === launcher || panel.contains(active)) {
+                launcher.focus({ preventScroll: true });
+            }
+        }
     }
 
     function collapsedVideoListFrame() {
         return {
-            transform: 'translateY(' + (launcher.offsetHeight + 12) + 'px) scale('
+            transform: 'scale('
                 + launcher.offsetWidth / panel.offsetWidth + ', '
                 + launcher.offsetHeight / panel.offsetHeight + ')',
             opacity: 0
@@ -135,9 +151,7 @@
     function closeVideoList(returnFocus, immediate) {
         launcher.setAttribute('aria-expanded', 'false');
         launcher.setAttribute('aria-label', '開啟影片清單');
-        if (returnFocus || panel.contains(document.activeElement)) {
-            launcher.focus({ preventScroll: true });
-        }
+        listReturnFocus = listReturnFocus || !!returnFocus || panel.contains(document.activeElement);
         if (immediate || listState === 'closed') {
             finishVideoList(false);
             return;
@@ -145,8 +159,7 @@
         if (listState === 'closing') { return; }
         var current = window.getComputedStyle(panel);
         var from = { transform: current.transform, opacity: current.opacity };
-        listState = 'closing';
-        panel.dataset.state = listState;
+        setListState('closing');
         panel.inert = true;
         animateVideoList(from, collapsedVideoListFrame(), false);
     }
@@ -166,8 +179,8 @@
         }
         panel.hidden = false;
         panel.inert = false;
-        listState = 'opening';
-        panel.dataset.state = listState;
+        listReturnFocus = false;
+        setListState('opening');
         launcher.setAttribute('aria-expanded', 'true');
         launcher.setAttribute('aria-label', '關閉影片清單');
         panelCloseButton.focus({ preventScroll: true });
@@ -398,6 +411,7 @@
     }
 
     setState('closed');
+    setListState('closed');
 
     videos.forEach(function (video) {
         var item = document.createElement('li');
