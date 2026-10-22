@@ -8,18 +8,6 @@
             cardTitle: '無人自主產業新布局！',
             title: '跟著 AI 主播 iKi，掌握下一個十年的無人自主產業布局！',
             start: 1
-        },
-        {
-            id: 'BwfFtaZyA9g',
-            cardTitle: '無人自主產業新布局！',
-            title: '跟著 AI 主播 iKi，掌握下一個十年的無人自主產業布局！',
-            start: 1
-        },
-        {
-            id: 'BwfFtaZyA9g',
-            cardTitle: '無人自主產業新布局！',
-            title: '跟著 AI 主播 iKi，掌握下一個十年的無人自主產業布局！',
-            start: 1
         }
     ];
     var widget = document.getElementById('homeVideos');
